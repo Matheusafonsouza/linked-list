@@ -5,6 +5,7 @@ class Node:
     def __init__(self, data: str) -> None:
         self.data = data
         self.next = None
+        self.prev = None
 
     def __repr__(self) -> str:
         return self.data
@@ -13,27 +14,46 @@ class Node:
 class List:
     def __init__(self) -> None:
         self.head = None
+        self.tail = None
 
-    def __repr__(self) -> str:
-        node: Node = self.head
-        nodes = list()
+    def insert(self, data: str) -> None:
+        node = Node(data=data)
+        node.next = self.head
 
-        while node is not None:
-            nodes.append(node.data)
+        if self.head != None:
+            self.head.prev = node
+        self.head = node
+
+        aux_node = self.head
+        while aux_node.next != None:
+            aux_node = aux_node.next
+        self.tail = aux_node
+
+    def print_list(self) -> None:
+        node = self.head
+        while node != None:
+            print(f"{node.data} -> ", end=" ")
             node = node.next
+        print("\n")
 
-        nodes.append("None")
-        return " -> ".join(nodes)
+    def print_list_backwards(self) -> None:
+        node = self.tail
+        while node != None:
+            print(f"{node.data} <- ", end=" ")
+            node = node.prev
+        print("\n")
 
 
 if __name__ == "__main__":
     list = List()
 
-    node_a = Node(data="a")
-    list.head = node_a
+    list.insert(5)
+    list.insert(8)
+    list.insert(9)
+    list.insert(12)
+    list.insert(15)
+    list.insert(33)
+    list.insert(42)
 
-    node_b = Node(data="b")
-    node_a.next = node_b
-
-    node_c = Node(data="c")
-    node_b.next = node_c
+    list.print_list()
+    list.print_list_backwards()
